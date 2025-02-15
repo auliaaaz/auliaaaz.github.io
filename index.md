@@ -4,11 +4,9 @@ layout: home
 nav_order: 1
 ---
 
-## Aulia's Blog
+# **Aulia's Blog**
 
-Hello! I am Aulia, a data enthusiast that like to work in **data analytics**, **data engineering**, and **machine learning**.
+Hello! I am Aulia, a data enthusiast that like to work in data analytics, data engineering, and machine learning.
 
-[Email](mailto:aauliasyahnur@gmail.com){: .btn .fs-3 .mr-2}
-[LinkedIn](https://www.linkedin.com/in/andiauliasyahnur/){: .btn .fs-3 .btn-purple }
-
----
+[Email](mailto:aauliasyahnur@gmail.com){: .btn .btn-purple .fs-4 .mr-2}
+[LinkedIn](https://www.linkedin.com/in/andiauliasyahnur/){: .btn .fs-4}
