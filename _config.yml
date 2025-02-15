@@ -1,8 +1,6 @@
 title: auliaaaz
 description: My Portfolio Website
-remote_theme: just-the-docs/just-the-docs
-plugins:
-  - jekyll-remote-theme
+theme: just-the-docs
 
 url: https://auliaaaz.github.io
 
