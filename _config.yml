@@ -1,6 +1,11 @@
 title: auliaaaz
-description: A portfolio blog
+description: My Portfolio Website
 theme: just-the-docs
 
-url: https://auliaaaz.github.io/
+url: https://auliaaaz.github.io
 
+# Search bar text
+search:
+  placeholder: Search auliaaaz
+
+aux_links: false
