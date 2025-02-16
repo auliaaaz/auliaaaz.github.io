@@ -19,14 +19,11 @@ Objectives:
 
 ## Load and Preprocessing Data
 
-
 ```python
 ! python --version
 ```
 
     Python 3.10.12
-
-
 
 ```python
 pip install ucimlrepo
@@ -35,7 +32,6 @@ pip install ucimlrepo
     /usr/local/lib/python3.10/dist-packages/ipykernel/ipkernel.py:283: DeprecationWarning:
     
     `should_run_async` will not call `transform_cell` automatically in the future. Please pass the result to `transformed_cell` argument and any exception that happen during thetransform in `preprocessing_exc_tuple` in IPython 7.17 and above.
-    
 
 
     Requirement already satisfied: ucimlrepo in /usr/local/lib/python3.10/dist-packages (0.0.7)
@@ -46,8 +42,6 @@ pip install ucimlrepo
     Requirement already satisfied: pytz>=2020.1 in /usr/local/lib/python3.10/dist-packages (from pandas>=1.0.0->ucimlrepo) (2024.2)
     Requirement already satisfied: tzdata>=2022.7 in /usr/local/lib/python3.10/dist-packages (from pandas>=1.0.0->ucimlrepo) (2024.2)
     Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.10/dist-packages (from python-dateutil>=2.8.2->pandas>=1.0.0->ucimlrepo) (1.17.0)
-
-
 
 ```python
 import pandas as pd
@@ -71,8 +65,6 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
     /usr/local/lib/python3.10/dist-packages/ipykernel/ipkernel.py:283: DeprecationWarning:
     
     `should_run_async` will not call `transform_cell` automatically in the future. Please pass the result to `transformed_cell` argument and any exception that happen during thetransform in `preprocessing_exc_tuple` in IPython 7.17 and above.
-    
-
 
 
 ```python
@@ -107,8 +99,6 @@ print(online_retail.variables)
     6  a 5-digit integral number uniquely assigned to...      None             no  
     7  the name of the country where each customer re...      None             no  
 
-
-
 ```python
 # convert the fetch dataset into dataframe format to make it easy to analyze
 data_url = online_retail.metadata['data_url']
@@ -132,8 +122,6 @@ print(df.head())
     3  12/1/2010 8:26       3.39     17850.0  United Kingdom  
     4  12/1/2010 8:26       3.39     17850.0  United Kingdom  
 
-
-
 ```python
 # check the data type and other information
 df.info()
@@ -155,15 +143,12 @@ df.info()
     dtypes: float64(2), int64(1), object(5)
     memory usage: 33.1+ MB
 
-
 ### Handling Data Quality
-
 
 ```python
 # check null values
 df.isnull().sum()
 ```
-
 
 
 
@@ -226,8 +211,6 @@ df.isnull().sum()
 </div><br><label><b>dtype:</b> int64</label>
 
 
-
-
 ```python
 # drop null rows where CustomerID or Description have null value
 df = df.dropna(subset=['CustomerID', 'Description'])
@@ -248,7 +231,6 @@ df = df[df["UnitPrice"] > 0]
 ```
 
 ### Add Features
-
 
 ```python
 # add time based features
@@ -279,15 +261,12 @@ df['IsCanceled'] = df['InvoiceNo'].str.contains('C', na=False)
     Try using .loc[row_indexer,col_indexer] = value instead
     
     See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-    
-
 
 
 ```python
 # statistic summary
 df[['Quantity', 'UnitPrice', 'Revenue']].describe()
 ```
-
 
 
 
@@ -580,11 +559,9 @@ df[['Quantity', 'UnitPrice', 'Revenue']].describe()
 
 
 
-
 ## Analysis
 
 ### Customer Analysis RFM
-
 
 ```python
 def analyze_customers(df):
@@ -663,7 +640,6 @@ def analyze_customers(df):
     return rfm
 ```
 
-
 ```python
 rfm = analyze_customers(df)
 segment_distribution = rfm['Segment'].value_counts().reset_index()
@@ -704,12 +680,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-
-    
-![png](EDA_Retail_files/EDA_Retail_18_0.png)
-    
-
-
+![png]({{ site.baseurl }}/assets/images/2024-02-19-blog-post/2024-02-19-blog-post_18_0.png){: .center-image }
 
 ```python
 avg_r = (rfm.groupby('Segment').agg({'Recency': 'mean'}).round(0)).reset_index()
@@ -742,12 +713,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-
-    
-![png](EDA_Retail_files/EDA_Retail_19_0.png)
-    
-
-
+![png]({{ site.baseurl }}/assets/images/2024-02-19-blog-post/2024-02-19-blog-post_19_0.png){: .center-image }
 
 ```python
 df_r = rfm.groupby("R_Score", observed=False).agg({'Recency':'mean'}).sort_values(by="R_Score").reset_index().rename(columns={'Recency': 'Avg_R_Value'})
@@ -779,7 +745,6 @@ fig.update_layout(
     showlegend=False)
 fig.show()
 ```
-
 
 <html>
 <head><meta charset="utf-8" /></head>
@@ -813,8 +778,6 @@ if (outputEl) {{
 </body>
 </html>
 
-
-
 ```python
 total_revenue = rfm.reset_index().groupby("Segment", observed=False).agg({"Monetary":"sum", "Recency":"mean", "CustomerID":"count"}).reset_index()
 fig = px.scatter(
@@ -834,7 +797,6 @@ fig.update_layout(
     title_font_size=16)
 fig.show()
 ```
-
 
 <html>
 <head><meta charset="utf-8" /></head>
@@ -868,9 +830,7 @@ if (outputEl) {{
 </body>
 </html>
 
-
 #### Insights and Recommendation
-
 
 ```python
 from IPython.display import display, HTML
@@ -921,7 +881,6 @@ styled_df = segments_df.style.hide(axis='index').set_properties(**{
 
 display(styled_df)
 ```
-
 
 <style type="text/css">
 #T_5fdec_row0_col0, #T_5fdec_row0_col1, #T_5fdec_row0_col2, #T_5fdec_row1_col0, #T_5fdec_row1_col1, #T_5fdec_row1_col2, #T_5fdec_row2_col0, #T_5fdec_row2_col1, #T_5fdec_row2_col2, #T_5fdec_row3_col0, #T_5fdec_row3_col1, #T_5fdec_row3_col2, #T_5fdec_row4_col0, #T_5fdec_row4_col1, #T_5fdec_row4_col2, #T_5fdec_row5_col0, #T_5fdec_row5_col1, #T_5fdec_row5_col2, #T_5fdec_row6_col0, #T_5fdec_row6_col1, #T_5fdec_row6_col2, #T_5fdec_row7_col0, #T_5fdec_row7_col1, #T_5fdec_row7_col2, #T_5fdec_row8_col0, #T_5fdec_row8_col1, #T_5fdec_row8_col2, #T_5fdec_row9_col0, #T_5fdec_row9_col1, #T_5fdec_row9_col2, #T_5fdec_row10_col0, #T_5fdec_row10_col1, #T_5fdec_row10_col2 {
@@ -997,9 +956,7 @@ display(styled_df)
 </table>
 
 
-
 ### Seasonality Sales Behaviour Analysis
-
 
 ```python
 monthly_sales = df.groupby(['Year', 'Month'], observed=False).agg({"Revenue":"sum", "CustomerID":"count"}).reset_index()
@@ -1020,7 +977,6 @@ fig = px.bar(monthly_sales,
 fig.update(layout_coloraxis_showscale=False)
 fig.show()
 ```
-
 
 <html>
 <head><meta charset="utf-8" /></head>
@@ -1054,8 +1010,6 @@ if (outputEl) {{
 </body>
 </html>
 
-
-
 <html>
 <head><meta charset="utf-8" /></head>
 <body>
@@ -1088,12 +1042,10 @@ if (outputEl) {{
 </body>
 </html>
 
-
 *  Monthly sales and the number of buyers showed a sharp increase between September 2011 and November 2011 which are near to the holiday season. Maintain a good application system will be good to handle the large amount of customers in this peak season.
 *  While the outlook appears positive, longer-term data is needed to determine whether this trend is driven by winter seasonality or reflects an overall improvement in performance.
 
 ### Product Analysis
-
 
 ```python
 product_performance = df.groupby('Description').agg({
@@ -1110,7 +1062,6 @@ fig = px.bar(product_performance,
 fig.update(layout_coloraxis_showscale=False)
 fig.show()
 ```
-
 
 <html>
 <head><meta charset="utf-8" /></head>
@@ -1144,9 +1095,7 @@ if (outputEl) {{
 </body>
 </html>
 
-
 To increase more the product selling, it can be conducted with programs like product bundling or cross-selling product to suggest related product to customer. It can be do with Apriori Algorithm
-
 
 ```python
 def basket_analysis(df):
@@ -1165,7 +1114,6 @@ def basket_analysis(df):
     return rules
 ```
 
-
 ```python
 rules = basket_analysis(df)
 rules = rules[['antecedents', 'consequents', 'support', 'confidence', 'lift']].head(5)
@@ -1176,7 +1124,6 @@ styled_df = rules.style.hide(axis='index').set_properties(**{
 
 display(styled_df)
 ```
-
 
 <style type="text/css">
 #T_81650_row0_col0, #T_81650_row0_col1, #T_81650_row0_col2, #T_81650_row0_col3, #T_81650_row0_col4, #T_81650_row1_col0, #T_81650_row1_col1, #T_81650_row1_col2, #T_81650_row1_col3, #T_81650_row1_col4, #T_81650_row2_col0, #T_81650_row2_col1, #T_81650_row2_col2, #T_81650_row2_col3, #T_81650_row2_col4, #T_81650_row3_col0, #T_81650_row3_col1, #T_81650_row3_col2, #T_81650_row3_col3, #T_81650_row3_col4, #T_81650_row4_col0, #T_81650_row4_col1, #T_81650_row4_col2, #T_81650_row4_col3, #T_81650_row4_col4 {
@@ -1232,7 +1179,6 @@ display(styled_df)
     </tr>
   </tbody>
 </table>
-
 
 
 Metrics:
