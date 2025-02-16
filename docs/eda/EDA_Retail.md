@@ -1,3 +1,10 @@
+---
+layout: default
+title: UK Online Retail
+parent: Exploratory Data Analysis
+nav_order: 1
+---
+
 ## Introduction
 
 Problem Statement:
