@@ -9,3 +9,14 @@ search:
   placeholder: Search auliaaaz
 
 aux_links: false
+
+# Enable navigation
+nav_enabled: true
+
+# Set default layouts for docs directory
+defaults:
+  - scope:
+      path: "docs"
+      type: "pages"
+    values:
+      layout: "default"
