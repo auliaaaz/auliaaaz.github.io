@@ -19,4 +19,4 @@ Objectives:
 
 ## Load and Preprocessing Data
 
-<iframe src="https://auliaaaz.github.io/docs/eda/images/2024-02-19-blog-post/rfm.html" width="100%" height="600px"></iframe>
+<iframe width="600" height="300" frameborder="0" scrolling="no" src="https://auliaaaz.github.io/docs/eda/images/2024-02-19-blog-post/rfm.html"></iframe>
