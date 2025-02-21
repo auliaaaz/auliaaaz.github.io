@@ -19,12 +19,10 @@ Objectives:
 
 ## Load and Preprocessing Data
 
-{% raw %}
 <div style="width: 100%; overflow: hidden;">
     <iframe src="https://auliaaaz.github.io/docs/eda/images/2024-02-19-blog-post/rfm.html" 
         width="100%" 
         height="600px" 
         style="border: none; overflow: hidden;"></iframe>
 </div>
-{% endraw %}
 
