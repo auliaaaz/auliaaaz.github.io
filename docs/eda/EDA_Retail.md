@@ -195,8 +195,7 @@ df[['Quantity', 'UnitPrice', 'Revenue']].describe()
 </div>
 
 ## Analysis
-
-### Customer Analysis RFM
+### Customer Analysis with RFM
 
 ```python
 def analyze_customers(df):
@@ -407,138 +406,138 @@ fig.show()
 <div style="width: 100%; overflow: hidden;">
     <iframe src="https://auliaaaz.github.io/docs/eda/images/2024-02-19-blog-post/RM%20per%20Segment.html" 
         width="100%" 
+        height="600px" 
         style="border: none; overflow: hidden;"></iframe>
 </div>
 
-#### Insights and Recommendation
+**Recommendation**
+
+| Segment            | Description                         | Recommended Strategy |
+|--------------------|-----------------------------------|----------------------|
+| Champions         | High-value frequent buyers        | VIP wholesale program or loyalty program for online shopping |
+| Loyal Customers   | Regular consistent buyers         | Wholesale bundles like Christmas Gift/Thanksgiving season, volume-based benefits, premium services |
+| Potential Loyalists | Promising new customers         | Trade credit options, graduated discounts, loyalty program promotions |
+| Recent Customers  | New accounts                      | Welcome pack, sample products |
+| Promising Customers | Small initial purchases        | Starter packs to order, merchandising tips, easy reorder process |
+| Needing Attention | Declining activity               | Comeback discounts, reorder reminders |
+| About to Sleep    | Reducing purchase frequency       | Customer survey about our product |
+| At Risk          | Previously high-value, now declining | Account review meetings, flexible payments, custom assortments |
+| Can't Lose Them  | Former top accounts               | Special pricing |
+| Hibernating      | Long-inactive accounts           | New product updates, restart packages like new-member, re-engagement |
+| Lost            | No recent activity                | Annual reactivation campaigns to their email, keep in promotional database |
+
+
+### Seasonality Sales Behaviour Analysis
 
 ```python
-from IPython.display import display, HTML
-segments_df = pd.DataFrame({
-    'Segment': [
-        'Champions',
-        'Loyal Customers',
-        'Potential Loyalists',
-        'Recent Customers',
-        'Promising Customers',
-        'Needing Attention',
-        'About to Sleep',
-        'At Risk',
-        "Can't Lose Them",
-        'Hibernating',
-        'Lost'],
-    'Description': [
-        'High-value frequent buyers',
-        'Regular consistent buyers',
-        'Promising new customers',
-        'New accounts',
-        'Small initial purchases',
-        'Declining activity',
-        'Reducing purchase frequency',
-        'Previously high-value, now declining',
-        'Former top accounts',
-        'Long-inactive accounts',
-        'No recent activity'],
-    'Recommended Strategy': [
-        'VIP wholesale program or loyalty program for online shopping',
-        'Wholesale bundles like Christmas Gift/Thanks-giving season, volume-based benefits, premium services',
-        'Trade credit options, graduated discounts, loyalty program promotions',
-        'Welcome pack, sample products',
-        'Starter packs to order, merchandising tips, easy reorder process',
-        'Comeback discounts, reorder reminders',
-        'Customer survey about our product',
-        'Account review meetings, flexible payments, custom assortments',
-        'Special pricing',
-        'New product updates, restart packages like new-member, re-engagement',
-        'Annual reactivation campaigns to their email, keep in promotional database'
-    ]
-})
+monthly_sales = df.groupby(['Year', 'Month'], observed=False).agg({"Revenue":"sum", "CustomerID":"count"}).reset_index()
+monthly_sales['Date'] = pd.to_datetime(monthly_sales[['Year', 'Month']].assign(DAY=1))
+monthly_sales = monthly_sales[monthly_sales["Date"]!= "2011-12-01"]
 
-styled_df = segments_df.style.hide(axis='index').set_properties(**{
+fig = px.bar(monthly_sales,
+             x='Date', y='Revenue', color='Revenue',
+             color_continuous_scale = 'Teal', title="Total Revenue per Month")
+
+fig.update(layout_coloraxis_showscale=False,)
+fig.show()
+
+fig = px.bar(monthly_sales,
+             x='Date', y='CustomerID', color='CustomerID',
+             color_continuous_scale = 'Teal', title="Number of Customer per Month")
+
+fig.update(layout_coloraxis_showscale=False)
+fig.show()
+```
+<div style="width: 100%; overflow: hidden;">
+    <iframe src="https://auliaaaz.github.io/docs/eda/images/2024-02-19-blog-post/Revenue%20Month.html" 
+        width="100%" 
+        height="600px" 
+        style="border: none; overflow: hidden;"></iframe>
+</div>
+<div style="width: 100%; overflow: hidden;">
+    <iframe src="https://auliaaaz.github.io/docs/eda/images/2024-02-19-blog-post/Customer%20Month.html" 
+        width="100%" 
+        height="600px" 
+        style="border: none; overflow: hidden;"></iframe>
+</div>
+
+*  Monthly sales and the number of buyers showed a sharp increase between September 2011 and November 2011 which are near to the holiday season. Maintain a good application system will be good to handle the large amount of customers in this peak season.
+*  While the outlook appears positive, longer-term data is needed to determine whether this trend is driven by winter seasonality or reflects an overall improvement in performance.
+
+### Product Analysis
+```python
+product_performance = df.groupby('Description').agg({
+        'Quantity': 'sum',
+        'Revenue': 'sum',
+        'CustomerID': 'nunique'
+    }).rename(columns={'CustomerID': 'Unique_Customers'})
+product_performance = product_performance.sort_values(by="Quantity", ascending=False).head(5).reset_index()
+
+fig = px.bar(product_performance,
+             x='Quantity', y='Description', color='Quantity',
+             color_continuous_scale = 'Teal', title="Top 5 the Most Ordered Product")
+
+fig.update(layout_coloraxis_showscale=False)
+fig.show()
+```
+<div style="width: 100%; overflow: hidden;">
+    <iframe src="https://auliaaaz.github.io/docs/eda/images/2024-02-19-blog-post/Top%20Product.html" 
+        width="100%" 
+        height="600px" 
+        style="border: none; overflow: hidden;"></iframe>
+</div>
+
+--> To increase product sales, strategies such as product bundling or cross-selling can be implemented to suggest related products to customers. The Apriori Algorithm can be used as one approach to achieve this.
+
+```python
+def basket_analysis(df):
+    basket = (
+        df.groupby(['InvoiceNo', 'Description'])['Quantity']
+        .sum().unstack().reset_index().fillna(0).set_index('InvoiceNo')
+    )
+
+    basket = basket > 0
+
+    # apply Apriori Algorithm
+    frequent_itemsets = apriori(basket, min_support=0.02, use_colnames=True)
+    rules = association_rules(frequent_itemsets, metric="lift", min_threshold=1, num_itemsets=len(frequent_itemsets))
+
+    rules = rules.sort_values('lift', ascending=False)
+    return rules
+```
+
+
+```python
+rules = basket_analysis(df)
+rules = rules[['antecedents', 'consequents', 'support', 'confidence', 'lift']].head(5)
+styled_df = rules.style.hide(axis='index').set_properties(**{
     'padding': '10px',
-    'text-align': 'left'
+    'text-align': 'left',
 })
 
 display(styled_df)
 ```
-<style>
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #222;
-    color: white;
-}
-th, td {
-    border: 1px solid #555;
-    padding: 10px;
-    text-align: left;
-}
-th {
-    background-color: #333;
-    font-weight: bold;
-}
-</style>
 
-<table>
-    <tr>
-        <th>Segment</th>
-        <th>Description</th>
-        <th>Recommended Strategy</th>
-    </tr>
-    <tr>
-        <td>Champions</td>
-        <td>High-value frequent buyers</td>
-        <td>VIP wholesale program or loyalty program for online shopping</td>
-    </tr>
-    <tr>
-        <td>Loyal Customers</td>
-        <td>Regular consistent buyers</td>
-        <td>Wholesale bundles like Christmas Gift/Thanksgiving season, volume-based benefits, premium services</td>
-    </tr>
-    <tr>
-        <td>Potential Loyalists</td>
-        <td>Promising new customers</td>
-        <td>Trade credit options, graduated discounts, loyalty program promotions</td>
-    </tr>
-    <tr>
-        <td>Recent Customers</td>
-        <td>New accounts</td>
-        <td>Welcome pack, sample products</td>
-    </tr>
-    <tr>
-        <td>Promising Customers</td>
-        <td>Small initial purchases</td>
-        <td>Starter packs to order, merchandising tips, easy reorder process</td>
-    </tr>
-    <tr>
-        <td>Needing Attention</td>
-        <td>Declining activity</td>
-        <td>Comeback discounts, reorder reminders</td>
-    </tr>
-    <tr>
-        <td>About to Sleep</td>
-        <td>Reducing purchase frequency</td>
-        <td>Customer survey about our product</td>
-    </tr>
-    <tr>
-        <td>At Risk</td>
-        <td>Previously high-value, now declining</td>
-        <td>Account review meetings, flexible payments, custom assortments</td>
-    </tr>
-    <tr>
-        <td>Can't Lose Them</td>
-        <td>Former top accounts</td>
-        <td>Special pricing</td>
-    </tr>
-    <tr>
-        <td>Hibernating</td>
-        <td>Long-inactive accounts</td>
-        <td>New product updates, restart packages like new-member, re-engagement</td>
-    </tr>
-    <tr>
-        <td>Lost</td>
-        <td>No recent activity</td>
-        <td>Annual reactivation campaigns to their email, keep in promotional database</td>
-    </tr>
-</table>
+| antecedents                                      | consequents                                        | support  | confidence | lift       |
+|-------------------------------------------------|--------------------------------------------------|----------|------------|------------|
+| frozenset({'PINK REGENCY TEACUP AND SAUCER'})   | frozenset({'ROSES REGENCY TEACUP AND SAUCER ', 'GREEN REGENCY TEACUP AND SAUCER'}) | 0.021045 | 0.701439   | 24.027846  |
+| frozenset({'ROSES REGENCY TEACUP AND SAUCER ', 'GREEN REGENCY TEACUP AND SAUCER'}) | frozenset({'PINK REGENCY TEACUP AND SAUCER'})   | 0.021045 | 0.720887   | 24.027846  |
+| frozenset({'ROSES REGENCY TEACUP AND SAUCER ', 'PINK REGENCY TEACUP AND SAUCER'})  | frozenset({'GREEN REGENCY TEACUP AND SAUCER'})  | 0.021045 | 0.894495   | 23.989564  |
+| frozenset({'GREEN REGENCY TEACUP AND SAUCER'})  | frozenset({'ROSES REGENCY TEACUP AND SAUCER ', 'PINK REGENCY TEACUP AND SAUCER'})  | 0.021045 | 0.564399   | 23.989564  |
+| frozenset({'PINK REGENCY TEACUP AND SAUCER'})   | frozenset({'GREEN REGENCY TEACUP AND SAUCER'})  | 0.024822 | 0.827338   | 22.188466  |
+
+Metrics:
+
+* Antecedents: Items that trigger the rule.
+* Consequents: Items that are likely to be purchased together with the antecedents.
+* Support: The frequency of the itemsets in the dataset.
+* Confidence: The likelihood of purchasing the consequents when the antecedents are bought.
+* Lift: The strength of the association between antecedents and consequents.
+
+From the sample of product bundling or cross-selling:
+70% of customers who buy 'PINK REGENCY TEACUP AND SAUCER' also buy 'ROSES REGENCY TEACUP AND SAUCER' and 'GREEN REGENCY TEACUP AND SAUCER'.
+
+This suggests offering discounts for bundling these products or promoting this pair in marketing emails.
+
+It would be even better to promote the least-ordered products by upselling them through product bundling or discounts.
 
