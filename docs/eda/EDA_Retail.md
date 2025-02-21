@@ -130,20 +130,16 @@ df.info()
 df.isnull().sum()
 ```
 
-<div class="code-example" markdown="1">
-
-| Column         | Missing Values |
-|---------------|---------------|
-| InvoiceNo     | 0             |
-| StockCode     | 0             |
-| Description   | 1454          |
-| Quantity      | 0             |
-| InvoiceDate   | 0             |
-| UnitPrice     | 0             |
-| CustomerID    | 135080        |
-| Country       | 0             |
-
-</div>
+| Column       | Missing Values |
+|-------------|---------------|
+| InvoiceNo   | 0             |
+| StockCode   | 0             |
+| Description | 1454          |
+| Quantity    | 0             |
+| InvoiceDate | 0             |
+| UnitPrice   | 0             |
+| CustomerID  | 135080        |
+| Country     | 0             |
 
 
 ```python
