@@ -142,6 +142,284 @@ df.info()
     dtypes: float64(2), int64(1), object(5)
     memory usage: 33.1+ MB
 
+### Handling Data Quality
+
+```python
+# check null values
+df.isnull().sum()
+```
+
+<div>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>InvoiceNo</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>StockCode</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Description</th>
+      <td>1454</td>
+    </tr>
+    <tr>
+      <th>Quantity</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>InvoiceDate</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>UnitPrice</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>CustomerID</th>
+      <td>135080</td>
+    </tr>
+    <tr>
+      <th>Country</th>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div><br><label><b>dtype:</b> int64</label>
+
+
+```python
+# drop null rows where CustomerID or Description have null value
+df = df.dropna(subset=['CustomerID', 'Description'])
+
+# drop duplicated rows
+df = df.drop_duplicates()
+
+# separate canceled orders
+df['IsCanceled'] = df['InvoiceNo'].str.contains('C', na=False)
+
+# convert data type
+df['InvoiceDate'] = pd.to_datetime(df['InvoiceDate'])
+df['CustomerID'] = df['CustomerID'].astype('float')
+
+# for further analysis only non-canceled product will be included
+df = df[df["Quantity"] > 0]
+df = df[df["UnitPrice"] > 0]
+```
+### Add Features
+
+```python
+# add time based features
+df['Year'] = df['InvoiceDate'].dt.year
+df['Month'] = df['InvoiceDate'].dt.month
+df['DayOfWeek'] = df['InvoiceDate'].dt.day_name()
+df['Hour'] = df['InvoiceDate'].dt.hour
+
+# add revenue feature
+df['Revenue'] = df['Quantity'] * df['UnitPrice']
+
+# add column for canceled orders
+df['IsCanceled'] = df['InvoiceNo'].str.contains('C', na=False)
+```
+```python
+# statistic summary
+df[['Quantity', 'UnitPrice', 'Revenue']].describe()
+```
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Quantity</th>
+      <th>UnitPrice</th>
+      <th>Revenue</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>392692.000000</td>
+      <td>392692.000000</td>
+      <td>392692.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>13.119702</td>
+      <td>3.125914</td>
+      <td>22.631500</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>180.492832</td>
+      <td>22.241836</td>
+      <td>311.099224</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>1.000000</td>
+      <td>0.001000</td>
+      <td>0.001000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>2.000000</td>
+      <td>1.250000</td>
+      <td>4.950000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>6.000000</td>
+      <td>1.950000</td>
+      <td>12.450000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>12.000000</td>
+      <td>3.750000</td>
+      <td>19.800000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>80995.000000</td>
+      <td>8142.750000</td>
+      <td>168469.600000</td>
+    </tr>
+  </tbody>
+</table>
+
+## Analysis
+
+### Customer Analysis RFM
+
+```python
+def analyze_customers(df):
+    # RFM Analysis
+    today = df['InvoiceDate'].max()
+
+    rfm = df.groupby('CustomerID').agg({
+        'InvoiceDate': lambda x: (today - x.max()).days,
+        'InvoiceNo': 'count',
+        'Revenue': 'sum'
+        }).rename(columns={
+        'InvoiceDate': 'Recency',
+        'InvoiceNo': 'Frequency',
+        'Revenue': 'Monetary'
+    })
+
+    rfm['R_Score'] = pd.qcut(rfm['Recency'], q=5, labels=['5', '4', '3', '2', '1'])
+    rfm['F_Score'] = pd.qcut(rfm['Frequency'], q=5, labels=['1', '2', '3', '4', '5'])
+    rfm['M_Score'] = pd.qcut(rfm['Monetary'], q=5, labels=['1', '2', '3', '4', '5'])
+
+    rfm['RFM_Segment_Score'] = rfm['R_Score'].astype(str) + rfm['F_Score'].astype(str) + rfm['M_Score'].astype(str)
+
+    segments = {
+    '555': 'Champions', '554': 'Champions', '544': 'Champions', '545': 'Champions',
+    '454': 'Champions', '455': 'Champions', '445': 'Champions',
+
+    '543': 'Loyal', '444': 'Loyal', '443': 'Loyal', '355': 'Loyal',
+    '354': 'Loyal', '345': 'Loyal', '344': 'Loyal', '335': 'Loyal',
+
+    '553': 'Potential_Loyalist', '551': 'Potential_Loyalist', '552': 'Potential_Loyalist',
+    '541': 'Potential_Loyalist', '542': 'Potential_Loyalist', '533': 'Potential_Loyalist',
+    '532': 'Potential_Loyalist', '531': 'Potential_Loyalist', '452': 'Potential_Loyalist',
+    '451': 'Potential_Loyalist', '442': 'Potential_Loyalist', '441': 'Potential_Loyalist',
+    '453': 'Potential_Loyalist', '433': 'Potential_Loyalist', '432': 'Potential_Loyalist',
+    '423': 'Potential_Loyalist', '353': 'Potential_Loyalist', '352': 'Potential_Loyalist',
+    '351': 'Potential_Loyalist', '342': 'Potential_Loyalist', '341': 'Potential_Loyalist',
+    '333': 'Potential_Loyalist', '323': 'Potential_Loyalist',
+
+    '512': 'Recent_Customers', '511': 'Recent_Customers', '422': 'Recent_Customers',
+    '421': 'Recent_Customers', '412': 'Recent_Customers', '411': 'Recent_Customers',
+    '311': 'Recent_Customers',
+
+    '525': 'Promising', '524': 'Promising', '523': 'Promising', '522': 'Promising',
+    '521': 'Promising', '515': 'Promising', '514': 'Promising', '513': 'Promising',
+    '425': 'Promising', '424': 'Promising', '413': 'Promising', '414': 'Promising',
+    '415': 'Promising', '315': 'Promising', '314': 'Promising', '313': 'Promising',
+
+    '535': 'Need_Attention', '534': 'Need_Attention', '443': 'Need_Attention',
+    '434': 'Need_Attention', '343': 'Need_Attention', '334': 'Need_Attention',
+    '325': 'Need_Attention', '324': 'Need_Attention',
+
+    '331': 'About_to_Sleep', '321': 'About_to_Sleep', '312': 'About_to_Sleep',
+    '221': 'About_to_Sleep', '213': 'About_to_Sleep', '231': 'About_to_Sleep',
+    '241': 'About_to_Sleep', '251': 'About_to_Sleep',
+
+    '255': 'At_Risk', '254': 'At_Risk', '245': 'At_Risk', '244': 'At_Risk',
+    '253': 'At_Risk', '252': 'At_Risk', '243': 'At_Risk', '242': 'At_Risk',
+    '235': 'At_Risk', '234': 'At_Risk', '225': 'At_Risk', '224': 'At_Risk',
+    '133': 'At_Risk', '152': 'At_Risk', '154': 'At_Risk', '143': 'At_Risk',
+    '142': 'At_Risk', '135': 'At_Risk', '134': 'At_Risk', '125': 'At_Risk', '124': 'At_Risk',
+
+    '155': 'Cannot_Lose', '154': 'Cannot_Lose', '144': 'Cannot_Lose',
+    '214': 'Cannot_Lose', '215': 'Cannot_Lose', '115': 'Cannot_Lose',
+    '114': 'Cannot_Lose', '113': 'Cannot_Lose',
+
+    '332': 'Hibernating', '322': 'Hibernating', '231': 'Hibernating',
+    '241': 'Hibernating', '253': 'Hibernating', '233': 'Hibernating',
+    '232': 'Hibernating', '223': 'Hibernating', '222': 'Hibernating',
+    '132': 'Hibernating', '123': 'Hibernating', '122': 'Hibernating',
+    '212': 'Hibernating', '211': 'Hibernating',
+
+    '111': 'Lost', '112': 'Lost', '121': 'Lost', '131': 'Lost', '141': 'Lost', '151': 'Lost',
+}
+
+    rfm['Segment'] = rfm['RFM_Segment_Score'].map(segments)
+    return rfm
+```
+
+```python
+rfm = analyze_customers(df)
+segment_distribution = rfm['Segment'].value_counts().reset_index()
+segment_distribution.columns = ['Segment', 'Number of Customer']
+
+segment_order = [
+    "Champions", "Loyal", "Potential_Loyalist", "Recent_Customers",
+    "Promising", "Need_Attention", "About_to_Sleep", "At_Risk",
+    "Cannot_Lose", "Hibernating", "Lost"
+]
+
+colors = sns.color_palette("RdYlGn", n_colors=len(segment_order))[::-1]
+color_map = {segment: colors[i] for i, segment in enumerate(segment_order)}
+
+plt.figure(figsize=(10, 6))
+sns.barplot(
+    data=segment_distribution,
+    x="Number of Customer",
+    y="Segment", hue='Segment',
+    order=segment_order,
+    palette=color_map, legend=False
+)
+
+plt.title("RFM Segment Distribution")
+plt.xlabel("Number of Customer")
+plt.ylabel("Segment")
+for i, bar in enumerate(plt.gca().patches):
+    value = bar.get_width()
+    plt.text(
+        value,
+        bar.get_y() + bar.get_height() / 2,
+        f"{value:.0f}",
+        va='center',
+        ha='left',
+        fontsize=10
+    )
+plt.tight_layout()
+plt.show()
+```
+<img src="https://raw.githubusercontent.com/auliaaaz/auliaaaz.github.io/main/docs/eda/images/2024-02-19-blog-post/2024-02-19-blog-post_19_0.png" alt="EDA Image" width="500">
+
+
+
+
 
 <div style="width: 100%; overflow: hidden;">
     <iframe src="https://auliaaaz.github.io/docs/eda/images/2024-02-19-blog-post/rfm.html" 
