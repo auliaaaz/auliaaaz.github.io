@@ -314,16 +314,231 @@ for i, bar in enumerate(plt.gca().patches):
 plt.tight_layout()
 plt.show()
 ```
-![EDA Image](../../../docs/eda/images/2024-02-19-blog-post/2024-02-19-blog-post_19_0.png)
+![EDA Image](../../../docs/eda/images/2024-02-19-blog-post/2024-02-19-blog-post_18_0.png)
 
+```python
+avg_r = (rfm.groupby('Segment').agg({'Recency': 'mean'}).round(0)).reset_index()
+avg_r.columns = ["Segment", "Average Recency (Days)"]
 
+plt.figure(figsize=(10, 6))
+sns.barplot(
+    data=avg_r,
+    x="Average Recency (Days)",
+    y="Segment",
+    hue = "Segment",
+    order=segment_order,
+    palette=color_map, legend=False
+)
 
+plt.title("Average Recency Customer Segmentation")
+plt.xlabel("Average Recency (Days)")
+plt.ylabel("Segment")
+for i, bar in enumerate(plt.gca().patches):
+    value = bar.get_width()
+    plt.text(
+        value,
+        bar.get_y() + bar.get_height() / 2,
+        f"{value:.0f}",
+        va='center',
+        ha='left',
+        fontsize=10
+    )
+plt.tight_layout()
+plt.show()
+```
+![EDA Image2](../../../docs/eda/images/2024-02-19-blog-post/2024-02-19-blog-post_19_0.png)
 
+```python
+df_r = rfm.groupby("R_Score", observed=False).agg({'Recency':'mean'}).sort_values(by="R_Score").reset_index().rename(columns={'Recency': 'Avg_R_Value'})
+df_f = rfm.groupby("F_Score", observed=False).agg({'Frequency':'mean'}).sort_values(by="F_Score").reset_index().rename(columns={'Frequency': 'Avg_F_Value'})
+df_m = rfm.groupby("M_Score", observed=False).agg({'Monetary':'mean'}).sort_values(by="M_Score",).reset_index().rename(columns={'Monetary': 'Avg_M_Value'})
 
+fig = make_subplots(
+    rows=1, cols=3,
+    subplot_titles=[
+        "Avg. R Value by R Score",
+        "Avg. F Value by F Score",
+        "Avg. M Value by M Score"])
+
+fig.add_trace(
+    go.Bar(x=df_r['R_Score'], y=df_r['Avg_R_Value'], marker_color='olive', name="Avg_R_Value"),
+    row=1, col=1)
+
+fig.add_trace(
+    go.Bar(x=df_f['F_Score'], y=df_f['Avg_F_Value'], marker_color='teal', name="Avg. F Value"),
+    row=1, col=2)
+
+fig.add_trace(
+    go.Bar(x=df_m['M_Score'], y=df_m['Avg_M_Value'], marker_color='purple', name="Avg. M Value"),
+    row=1, col=3)
+
+fig.update_layout(
+    height=400, width=1200,
+    title_text="RFM Metrics",
+    showlegend=False)
+fig.show()
+```
 <div style="width: 100%; overflow: hidden;">
     <iframe src="https://auliaaaz.github.io/docs/eda/images/2024-02-19-blog-post/rfm.html" 
         width="100%" 
         height="600px" 
         style="border: none; overflow: hidden;"></iframe>
 </div>
+
+```python
+total_revenue = rfm.reset_index().groupby("Segment", observed=False).agg({"Monetary":"sum", "Recency":"mean", "CustomerID":"count"}).reset_index()
+fig = px.scatter(
+    total_revenue,
+    x="Recency",
+    y="Monetary",
+    size="CustomerID",
+    color="Segment",
+    hover_name="Segment",
+    title="Recency and Monetary of each Segment",
+    labels={"Recency": "AVG Days Since Last Transaction",
+            "Monetary": "Total Revenue"})
+fig.update_layout(
+    xaxis_title="AVG Days Since Last Transaction",
+    yaxis_title="Total Revenue",
+    legend_title="Segment",
+    title_font_size=16)
+fig.show()
+```
+<div style="width: 100%; overflow: hidden;">
+    <iframe src="https://auliaaaz.github.io/docs/eda/images/2024-02-19-blog-post/RM%20per%20Segment.html" 
+        width="100%" 
+        style="border: none; overflow: hidden;"></iframe>
+</div>
+
+#### Insights and Recommendation
+
+```python
+from IPython.display import display, HTML
+segments_df = pd.DataFrame({
+    'Segment': [
+        'Champions',
+        'Loyal Customers',
+        'Potential Loyalists',
+        'Recent Customers',
+        'Promising Customers',
+        'Needing Attention',
+        'About to Sleep',
+        'At Risk',
+        "Can't Lose Them",
+        'Hibernating',
+        'Lost'],
+    'Description': [
+        'High-value frequent buyers',
+        'Regular consistent buyers',
+        'Promising new customers',
+        'New accounts',
+        'Small initial purchases',
+        'Declining activity',
+        'Reducing purchase frequency',
+        'Previously high-value, now declining',
+        'Former top accounts',
+        'Long-inactive accounts',
+        'No recent activity'],
+    'Recommended Strategy': [
+        'VIP wholesale program or loyalty program for online shopping',
+        'Wholesale bundles like Christmas Gift/Thanks-giving season, volume-based benefits, premium services',
+        'Trade credit options, graduated discounts, loyalty program promotions',
+        'Welcome pack, sample products',
+        'Starter packs to order, merchandising tips, easy reorder process',
+        'Comeback discounts, reorder reminders',
+        'Customer survey about our product',
+        'Account review meetings, flexible payments, custom assortments',
+        'Special pricing',
+        'New product updates, restart packages like new-member, re-engagement',
+        'Annual reactivation campaigns to their email, keep in promotional database'
+    ]
+})
+
+styled_df = segments_df.style.hide(axis='index').set_properties(**{
+    'padding': '10px',
+    'text-align': 'left'
+})
+
+display(styled_df)
+```
+<style>
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #222;
+    color: white;
+}
+th, td {
+    border: 1px solid #555;
+    padding: 10px;
+    text-align: left;
+}
+th {
+    background-color: #333;
+    font-weight: bold;
+}
+</style>
+
+<table>
+    <tr>
+        <th>Segment</th>
+        <th>Description</th>
+        <th>Recommended Strategy</th>
+    </tr>
+    <tr>
+        <td>Champions</td>
+        <td>High-value frequent buyers</td>
+        <td>VIP wholesale program or loyalty program for online shopping</td>
+    </tr>
+    <tr>
+        <td>Loyal Customers</td>
+        <td>Regular consistent buyers</td>
+        <td>Wholesale bundles like Christmas Gift/Thanksgiving season, volume-based benefits, premium services</td>
+    </tr>
+    <tr>
+        <td>Potential Loyalists</td>
+        <td>Promising new customers</td>
+        <td>Trade credit options, graduated discounts, loyalty program promotions</td>
+    </tr>
+    <tr>
+        <td>Recent Customers</td>
+        <td>New accounts</td>
+        <td>Welcome pack, sample products</td>
+    </tr>
+    <tr>
+        <td>Promising Customers</td>
+        <td>Small initial purchases</td>
+        <td>Starter packs to order, merchandising tips, easy reorder process</td>
+    </tr>
+    <tr>
+        <td>Needing Attention</td>
+        <td>Declining activity</td>
+        <td>Comeback discounts, reorder reminders</td>
+    </tr>
+    <tr>
+        <td>About to Sleep</td>
+        <td>Reducing purchase frequency</td>
+        <td>Customer survey about our product</td>
+    </tr>
+    <tr>
+        <td>At Risk</td>
+        <td>Previously high-value, now declining</td>
+        <td>Account review meetings, flexible payments, custom assortments</td>
+    </tr>
+    <tr>
+        <td>Can't Lose Them</td>
+        <td>Former top accounts</td>
+        <td>Special pricing</td>
+    </tr>
+    <tr>
+        <td>Hibernating</td>
+        <td>Long-inactive accounts</td>
+        <td>New product updates, restart packages like new-member, re-engagement</td>
+    </tr>
+    <tr>
+        <td>Lost</td>
+        <td>No recent activity</td>
+        <td>Annual reactivation campaigns to their email, keep in promotional database</td>
+    </tr>
+</table>
 
