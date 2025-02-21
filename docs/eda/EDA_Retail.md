@@ -28,20 +28,6 @@ Objectives:
 pip install ucimlrepo
 ```
 
-    /usr/local/lib/python3.10/dist-packages/ipykernel/ipkernel.py:283: DeprecationWarning:
-    
-    `should_run_async` will not call `transform_cell` automatically in the future. Please pass the result to `transformed_cell` argument and any exception that happen during thetransform in `preprocessing_exc_tuple` in IPython 7.17 and above.
-
-
-    Requirement already satisfied: ucimlrepo in /usr/local/lib/python3.10/dist-packages (0.0.7)
-    Requirement already satisfied: pandas>=1.0.0 in /usr/local/lib/python3.10/dist-packages (from ucimlrepo) (2.2.2)
-    Requirement already satisfied: certifi>=2020.12.5 in /usr/local/lib/python3.10/dist-packages (from ucimlrepo) (2024.12.14)
-    Requirement already satisfied: numpy>=1.22.4 in /usr/local/lib/python3.10/dist-packages (from pandas>=1.0.0->ucimlrepo) (1.26.4)
-    Requirement already satisfied: python-dateutil>=2.8.2 in /usr/local/lib/python3.10/dist-packages (from pandas>=1.0.0->ucimlrepo) (2.8.2)
-    Requirement already satisfied: pytz>=2020.1 in /usr/local/lib/python3.10/dist-packages (from pandas>=1.0.0->ucimlrepo) (2024.2)
-    Requirement already satisfied: tzdata>=2022.7 in /usr/local/lib/python3.10/dist-packages (from pandas>=1.0.0->ucimlrepo) (2024.2)
-    Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.10/dist-packages (from python-dateutil>=2.8.2->pandas>=1.0.0->ucimlrepo) (1.17.0)
-
 ```python
 import pandas as pd
 from ucimlrepo import fetch_ucirepo
@@ -60,11 +46,6 @@ warnings.filterwarnings("ignore", category=FutureWarning, module="pandas")
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 ```
-
-    /usr/local/lib/python3.10/dist-packages/ipykernel/ipkernel.py:283: DeprecationWarning:
-    
-    `should_run_async` will not call `transform_cell` automatically in the future. Please pass the result to `transformed_cell` argument and any exception that happen during thetransform in `preprocessing_exc_tuple` in IPython 7.17 and above.
-
 
 ```python
 # fetch dataset
@@ -149,51 +130,20 @@ df.info()
 df.isnull().sum()
 ```
 
-<div>
+<div class="code-example" markdown="1">
 
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>0</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>InvoiceNo</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>StockCode</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Description</th>
-      <td>1454</td>
-    </tr>
-    <tr>
-      <th>Quantity</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>InvoiceDate</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>UnitPrice</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>CustomerID</th>
-      <td>135080</td>
-    </tr>
-    <tr>
-      <th>Country</th>
-      <td>0</td>
-    </tr>
-  </tbody>
-</table>
-</div><br><label><b>dtype:</b> int64</label>
+| Column         | Missing Values |
+|---------------|---------------|
+| InvoiceNo     | 0             |
+| StockCode     | 0             |
+| Description   | 1454          |
+| Quantity      | 0             |
+| InvoiceDate   | 0             |
+| UnitPrice     | 0             |
+| CustomerID    | 135080        |
+| Country       | 0             |
+
+</div>
 
 
 ```python
@@ -233,67 +183,20 @@ df['IsCanceled'] = df['InvoiceNo'].str.contains('C', na=False)
 # statistic summary
 df[['Quantity', 'UnitPrice', 'Revenue']].describe()
 ```
+<div class="code-example" markdown="1">
 
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Quantity</th>
-      <th>UnitPrice</th>
-      <th>Revenue</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>count</th>
-      <td>392692.000000</td>
-      <td>392692.000000</td>
-      <td>392692.000000</td>
-    </tr>
-    <tr>
-      <th>mean</th>
-      <td>13.119702</td>
-      <td>3.125914</td>
-      <td>22.631500</td>
-    </tr>
-    <tr>
-      <th>std</th>
-      <td>180.492832</td>
-      <td>22.241836</td>
-      <td>311.099224</td>
-    </tr>
-    <tr>
-      <th>min</th>
-      <td>1.000000</td>
-      <td>0.001000</td>
-      <td>0.001000</td>
-    </tr>
-    <tr>
-      <th>25%</th>
-      <td>2.000000</td>
-      <td>1.250000</td>
-      <td>4.950000</td>
-    </tr>
-    <tr>
-      <th>50%</th>
-      <td>6.000000</td>
-      <td>1.950000</td>
-      <td>12.450000</td>
-    </tr>
-    <tr>
-      <th>75%</th>
-      <td>12.000000</td>
-      <td>3.750000</td>
-      <td>19.800000</td>
-    </tr>
-    <tr>
-      <th>max</th>
-      <td>80995.000000</td>
-      <td>8142.750000</td>
-      <td>168469.600000</td>
-    </tr>
-  </tbody>
-</table>
+|       | Quantity       | UnitPrice     | Revenue       |
+|-------|--------------:|-------------:|-------------:|
+| count | 392692.000000 | 392692.000000 | 392692.000000 |
+| mean  | 13.119702     | 3.125914      | 22.631500     |
+| std   | 180.492832    | 22.241836     | 311.099224    |
+| min   | 1.000000      | 0.001000      | 0.001000      |
+| 25%   | 2.000000      | 1.250000      | 4.950000      |
+| 50%   | 6.000000      | 1.950000      | 12.450000     |
+| 75%   | 12.000000     | 3.750000      | 19.800000     |
+| max   | 80995.000000  | 8142.750000   | 168469.600000 |
+
+</div>
 
 ## Analysis
 
@@ -415,7 +318,7 @@ for i, bar in enumerate(plt.gca().patches):
 plt.tight_layout()
 plt.show()
 ```
-<img src="https://raw.githubusercontent.com/auliaaaz/auliaaaz.github.io/main/docs/eda/images/2024-02-19-blog-post/2024-02-19-blog-post_19_0.png" alt="EDA Image" width="500">
+![EDA Image](../../../docs/eda/images/2024-02-19-blog-post/2024-02-19-blog-post_19_0.png)
 
 
 
