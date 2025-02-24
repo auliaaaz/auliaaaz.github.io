@@ -122,4 +122,29 @@ installs_avg_category = installs_avg_category.sort_values(by='Installs', ascendi
 num_category = px.bar(installs_avg_category, x='Category',  y='Installs', title='Total Installs by Category')
 num_category.show()
 ```
+<div style="width: 100%; overflow: hidden;">
+    <iframe src="https://auliaaaz.github.io/docs/eda/images/PlayStoreRecommendation/Total%20Installs%20by%20Category.html" 
+        width="700" 
+        height="600px" 
+        style="border: none; overflow: hidden;"></iframe>
+</div>
 
+The chart shows that the categories of 'Communication,' 'Games,' 'Family,' and 'Tools' boast the highest installation rates among users. Since our goal is to recommend applications that offer unique experiences and aren't overly mainstream, we'll factor in the number of installations to filter our list of applications. This will serve as our starting point to select a niche or explore new possibilities for users to explore and install.
+
+Next, we will also visualize the rating of each category because we wanted those list application are applications that user most like with reputable rating.
+
+```python
+# Group by category according to ratings
+ratings_avg_category = clean_google_play_store.groupby('Category')['Rating'].mean().reset_index()
+ratings_avg_category = ratings_avg_category.sort_values(by='Rating', ascending=False)
+
+# Create a box plot to visualize the distribution of ratings for each category
+rating_category = px.box(clean_google_play_store, x='Category',  y='Rating', title='Ratings Distribution by Category')
+rating_category.show()
+```
+<div style="width: 100%; overflow: hidden;">
+    <iframe src="https://auliaaaz.github.io/docs/eda/images/PlayStoreRecommendation/Ratings%20Distribution%20by%20Category.html" 
+        width="700" 
+        height="600px" 
+        style="border: none; overflow: hidden;"></iframe>
+</div>
