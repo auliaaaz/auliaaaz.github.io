@@ -310,6 +310,7 @@ _app_reviews['Final_Weight'] = _app_reviews['Rating_Normalized'] + _app_reviews[
 _app_reviews.sort_values(by='Final_Weight', ascending=False).head(5)
 ```
 
+```
 | App                                       | Category           | Rating | Reviews | Size  | Installs  | Type  | Price | Content Rating | Genres          | Last Updated  | Current Ver | Android Ver | Sentiment Polarity | Sentiment Subjectivity | Translated Review | Polarity Normalized | Subjectivity Normalized | Rating Normalized | Final Weight |
 |-------------------------------------------|--------------------|--------|---------|-------|-----------|-------|-------|----------------|----------------|--------------|-------------|--------------|-------------------|----------------------|----------------|--------------------|----------------------|----------------|--------------|
 | DMV Permit Practice Test 2018 Edition     | AUTO_AND_VEHICLES  | 4.9    | 6090    | 27.0  | 100000    | Free  | 0.0   | Everyone       | Auto & Vehicles | July 3, 2018  | 1.7         | 4.2 and up  | 341.783331        | 647.135574          | 34.0           | 0.099260           | 0.013281              | 1.000000       | 1.085979     |
@@ -317,7 +318,7 @@ _app_reviews.sort_values(by='Final_Weight', ascending=False).head(5)
 | FreePrints – Free Photos Delivered        | PHOTOGRAPHY        | 4.8    | 109500  | 37.0  | 1000000   | Free  | 0.0   | Everyone       | Photography     | August 2, 2018| 2.18.2      | 4.1 and up  | 578.250715        | 812.177818          | 36.0           | 0.111519           | 0.016668              | 0.888889       | 0.983739     |
 | Home Workout for Men - Bodybuilding       | HEALTH_AND_FITNESS | 4.8    | 12705   | 15.0  | 1000000   | Free  | 0.0   | Everyone       | Health & Fitness| July 10, 2018 | 1.0.2       | 4.0 and up  | 353.851875        | 317.790159          | 26.0           | 0.099886           | 0.006522              | 0.888889       | 0.982252     |
 | GoodRx Drug Prices and Coupons            | MEDICAL            | 4.8    | 59158   | 11.0  | 1000000   | Free  | 0.0   | Everyone       | Medical         | July 26, 2018 | 5.4.8       | 4.1 and up  | 345.632857        | 614.719762          | 37.0           | 0.099459           | 0.012616              | 0.888889       | 0.975732     |
-
+```
 
 ## Recommendation
 ### **Top 5 Apps Recommendation for You!**
