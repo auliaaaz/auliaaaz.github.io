@@ -26,7 +26,7 @@ nav_order: 1
 
 Perform exploratory data analysis on the netflix_data.csv data to understand more about movies from the 1990s decade.
 
-### **netflix_data.csv**
+**netflix_data.csv**
 ```
 | Column         | Description                     |
 |----------------|---------------------------------|
