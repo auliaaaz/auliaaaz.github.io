@@ -10,19 +10,21 @@ nav_order: 1
 Perform exploratory data analysis on the netflix_data.csv data to understand more about movies from the 1990s decade.
 
 ### **netflix_data.csv**
-|   | Column        | Description                     |
-|---|:-------------|:--------------------------------|
-| 0 | `show_id`    | The ID of the show             |
-| 1 | `type`       | Type of show                   |
-| 2 | `title`      | Title of the show              |
-| 3 | `director`   | Director of the show           |
-| 4 | `cast`       | Cast of the show               |
-| 5 | `country`    | Country of origin              |
-| 6 | `date_added` | Date added to Netflix          |
-| 7 | `release_year` | Year of Netflix release       |
-| 8 | `duration`   | Duration of the show in minutes |
-| 9 | `description` | Description of the show       |
-| 10 | `genre`     | Show genre                     |
+```
+| Column         | Description                     |
+|----------------|---------------------------------|
+| `show_id`      | The ID of the show              |
+| `type`         | Type of show                    |
+| `title`        | Title of the show               |
+| `director`     | Director of the show            |
+| `cast`         | Cast of the show                |
+| `country`      | Country of origin               |
+| `date_added`   | Date added to Netflix           |
+| `release_year` | Year of Netflix release         |
+| `duration`     | Duration of the show in minutes |
+| `description`  | Description of the show         |
+| `genre`        | Show genre                      |
+```
 
 
 
@@ -40,14 +42,183 @@ netflix_df = pd.read_csv("netflix_data.csv")
 # Start coding here! Use as many cells as you like
 netflix_df.head(4)
 ```
-
-|   | show_id | type  | title | director           | cast                                      | country       | date_added        | release_year | duration | description                                      | genre          |
-|---|:--------|:------|:------|:-------------------|:-------------------------------------------|:-------------|:------------------|:-------------|:---------|:------------------------------------------------|:--------------|
-| 0 | s2      | Movie | 7:19  | Jorge Michel Grau  | Demián Bichir, Héctor Bonilla, Oscar Serrano, ... | Mexico       | December 23, 2016 |         2016 |       93 | After a devastating earthquake hits Mexico City... | Dramas        |
-| 1 | s3      | Movie | 23:59 | Gilbert Chan      | Tedd Chan, Stella Chung, Henley Hii, Lawrence ... | Singapore    | December 20, 2018 |         2011 |       78 | When an army recruit is found dead, his fellow...  | Horror Movies |
-| 2 | s4      | Movie | 9     | Shane Acker       | Elijah Wood, John C. Reilly, Jennifer Connelly... | United States | November 16, 2017 |         2009 |       80 | In a postapocalyptic world, rag-doll robots hi... | Action        |
-| 3 | s5      | Movie | 21    | Robert Luketic    | Jim Sturgess, Kevin Spacey, Kate Bosworth, Aar... | United States | January 1, 2020   |         2008 |      123 | A brilliant group of students become card-coun... | Dramas        |
-
+<div>
+    <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>show_id</th>
+      <th>type</th>
+      <th>title</th>
+      <th>director</th>
+      <th>cast</th>
+      <th>country</th>
+      <th>date_added</th>
+      <th>release_year</th>
+      <th>duration</th>
+      <th>description</th>
+      <th>genre</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>s2</td>
+      <td>Movie</td>
+      <td>7:19</td>
+      <td>Jorge Michel Grau</td>
+      <td>Demián Bichir, Héctor Bonilla, Oscar Serrano, ...</td>
+      <td>Mexico</td>
+      <td>December 23, 2016</td>
+      <td>2016</td>
+      <td>93</td>
+      <td>After a devastating earthquake hits Mexico Cit...</td>
+      <td>Dramas</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>s3</td>
+      <td>Movie</td>
+      <td>23:59</td>
+      <td>Gilbert Chan</td>
+      <td>Tedd Chan, Stella Chung, Henley Hii, Lawrence ...</td>
+      <td>Singapore</td>
+      <td>December 20, 2018</td>
+      <td>2011</td>
+      <td>78</td>
+      <td>When an army recruit is found dead, his fellow...</td>
+      <td>Horror Movies</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>s4</td>
+      <td>Movie</td>
+      <td>9</td>
+      <td>Shane Acker</td>
+      <td>Elijah Wood, John C. Reilly, Jennifer Connelly...</td>
+      <td>United States</td>
+      <td>November 16, 2017</td>
+      <td>2009</td>
+      <td>80</td>
+      <td>In a postapocalyptic world, rag-doll robots hi...</td>
+      <td>Action</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>s5</td>
+      <td>Movie</td>
+      <td>21</td>
+      <td>Robert Luketic</td>
+      <td>Jim Sturgess, Kevin Spacey, Kate Bosworth, Aar...</td>
+      <td>United States</td>
+      <td>January 1, 2020</td>
+      <td>2008</td>
+      <td>123</td>
+      <td>A brilliant group of students become card-coun...</td>
+      <td>Dramas</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>s6</td>
+      <td>TV Show</td>
+      <td>46</td>
+      <td>Serdar Akar</td>
+      <td>Erdal Beşikçioğlu, Yasemin Allen, Melis Birkan...</td>
+      <td>Turkey</td>
+      <td>July 1, 2017</td>
+      <td>2016</td>
+      <td>1</td>
+      <td>A genetics professor experiments with a treatm...</td>
+      <td>International TV</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>4807</th>
+      <td>s7779</td>
+      <td>Movie</td>
+      <td>Zombieland</td>
+      <td>Ruben Fleischer</td>
+      <td>Jesse Eisenberg, Woody Harrelson, Emma Stone, ...</td>
+      <td>United States</td>
+      <td>November 1, 2019</td>
+      <td>2009</td>
+      <td>88</td>
+      <td>Looking to survive in a world taken over by zo...</td>
+      <td>Comedies</td>
+    </tr>
+    <tr>
+      <th>4808</th>
+      <td>s7781</td>
+      <td>Movie</td>
+      <td>Zoo</td>
+      <td>Shlok Sharma</td>
+      <td>Shashank Arora, Shweta Tripathi, Rahul Kumar, ...</td>
+      <td>India</td>
+      <td>July 1, 2018</td>
+      <td>2018</td>
+      <td>94</td>
+      <td>A drug dealer starts having doubts about his t...</td>
+      <td>Dramas</td>
+    </tr>
+    <tr>
+      <th>4809</th>
+      <td>s7782</td>
+      <td>Movie</td>
+      <td>Zoom</td>
+      <td>Peter Hewitt</td>
+      <td>Tim Allen, Courteney Cox, Chevy Chase, Kate Ma...</td>
+      <td>United States</td>
+      <td>January 11, 2020</td>
+      <td>2006</td>
+      <td>88</td>
+      <td>Dragged from civilian life, a former superhero...</td>
+      <td>Children</td>
+    </tr>
+    <tr>
+      <th>4810</th>
+      <td>s7783</td>
+      <td>Movie</td>
+      <td>Zozo</td>
+      <td>Josef Fares</td>
+      <td>Imad Creidi, Antoinette Turk, Elias Gergi, Car...</td>
+      <td>Sweden</td>
+      <td>October 19, 2020</td>
+      <td>2005</td>
+      <td>99</td>
+      <td>When Lebanon's Civil War deprives Zozo of his ...</td>
+      <td>Dramas</td>
+    </tr>
+    <tr>
+      <th>4811</th>
+      <td>s7784</td>
+      <td>Movie</td>
+      <td>Zubaan</td>
+      <td>Mozez Singh</td>
+      <td>Vicky Kaushal, Sarah-Jane Dias, Raaghav Chanan...</td>
+      <td>India</td>
+      <td>March 2, 2019</td>
+      <td>2015</td>
+      <td>111</td>
+      <td>A scrappy but poor boy worms his way into a ty...</td>
+      <td>Dramas</td>
+    </tr>
+  </tbody>
+</table>
+<p>4812 rows × 11 columns</p>
+</div>
 
 **What was the most frequent movie duration in the 1990s?** 
 ```python
@@ -85,13 +256,74 @@ schools = pd.read_csv("schools.csv")
 # Preview the data
 schools.head()
 ```
-|   | school_name                                          | borough   | building_code | average_math | average_reading | average_writing | percent_tested |
-|:--|:-----------------------------------------------------|:----------|:-------------|:-------------|:---------------|:---------------|:---------------|
-| 0 | New Explorations into Science, Technology and ...   | Manhattan | M022         | 657          | 601            | 601            | NaN            |
-| 1 | Essex Street Academy                                | Manhattan | M445         | 395          | 411            | 387            | 78.9           |
-| 2 | Lower Manhattan Arts Academy                        | Manhattan | M445         | 418          | 428            | 415            | 65.1           |
-| 3 | High School for Dual Language and Asian Studies    | Manhattan | M445         | 613          | 453            | 463            | 95.9           |
-| 4 | Henry Street School for International Studies      | Manhattan | M056         | 410          | 406            | 381            | 59.7           |
+<div>
+    <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>school_name</th>
+      <th>borough</th>
+      <th>building_code</th>
+      <th>average_math</th>
+      <th>average_reading</th>
+      <th>average_writing</th>
+      <th>percent_tested</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>New Explorations into Science, Technology and ...</td>
+      <td>Manhattan</td>
+      <td>M022</td>
+      <td>657</td>
+      <td>601</td>
+      <td>601</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Essex Street Academy</td>
+      <td>Manhattan</td>
+      <td>M445</td>
+      <td>395</td>
+      <td>411</td>
+      <td>387</td>
+      <td>78.9</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Lower Manhattan Arts Academy</td>
+      <td>Manhattan</td>
+      <td>M445</td>
+      <td>418</td>
+      <td>428</td>
+      <td>415</td>
+      <td>65.1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>High School for Dual Language and Asian Studies</td>
+      <td>Manhattan</td>
+      <td>M445</td>
+      <td>613</td>
+      <td>453</td>
+      <td>463</td>
+      <td>95.9</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Henry Street School for International Studies</td>
+      <td>Manhattan</td>
+      <td>M056</td>
+      <td>410</td>
+      <td>406</td>
+      <td>381</td>
+      <td>59.7</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
 **Which NYC schools have the best math results?** The best math results are at least 80% of the *maximum possible score of 800* for math.
 
@@ -155,10 +387,29 @@ largest_std_dev = pd.DataFrame({"borough":[largest_std_dev["borough"]],
                                'std_SAT':[largest_std_dev["std_SAT"]]})
 largest_std_dev
 ```
-|   | borough   | num_schools | average_SAT | total_SAT | std_SAT |
-|---|:---------|------------:|------------:|----------:|--------:|
-| 0 | Manhattan | 89         | 1340.13     | 1859      | 230.29  |
-
-
+<div>
+    <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>borough</th>
+      <th>num_schools</th>
+      <th>average_SAT</th>
+      <th>total_SAT</th>
+      <th>std_SAT</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Manhattan</td>
+      <td>89</td>
+      <td>1340.13</td>
+      <td>1859</td>
+      <td>230.29</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
 Manhattan is a borough in NYC that have the largest standard deviation of total SAT score.
