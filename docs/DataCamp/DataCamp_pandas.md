@@ -4,6 +4,10 @@ title: Data Manipulation
 parent: DataCamp Works
 nav_order: 1
 ---
+
+### Table of Contents
+{:toc}
+
 ## Investigating Netflix Movies
 **Netflix**! What started in 1997 as a DVD rental service has since exploded into one of the largest entertainment and media companies.
 
