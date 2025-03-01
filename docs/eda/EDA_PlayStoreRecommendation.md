@@ -6,6 +6,22 @@ nav_order: 2
 ---
 
 ## Google Play Store Recommendation Apps
+{: .no_toc }
+<br/>
+
+<details open markdown="block">
+  <summary>
+    Table of contents
+  </summary>
+  {: .text-delta }
+
+
+1. TOC
+{:toc}
+</details>
+---
+
+## Load the Data
 The Google Play Store dataset used here consists of two main files:
 1. googleplaystore.csv: This dataset contains a list of Android apps along with details such as genre, user ratings, and more.
 2. googleplaystore_users_reviews.csv: This dataset includes user reviews (and some sentiment scores) which are associated with the apps listed in the first dataset.
@@ -321,7 +337,8 @@ _app_reviews.sort_values(by='Final_Weight', ascending=False).head(5)
 ```
 
 ## Recommendation
-### **Top 5 Apps Recommendation for You!**
+
+**Top 5 Apps Recommendation for You!**
 (Curated using Kaggle data analysis + user reviews)
 
 📚 **Driving & Education**
