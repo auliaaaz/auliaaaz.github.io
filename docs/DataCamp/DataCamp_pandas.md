@@ -11,7 +11,7 @@ Perform exploratory data analysis on the netflix_data.csv data to understand mor
 
 ### **netflix_data.csv**
 | Column | Description |
-|--------|-------------|
+|:-------|:------------|
 | `show_id` | The ID of the show |
 | `type` | Type of show |
 | `title` | Title of the show |
@@ -40,7 +40,7 @@ netflix_df = pd.read_csv("netflix_data.csv")
 netflix_df.head(4)
 ```
 |   | show_id | type  | title | director           | cast                                      | country       | date_added        | release_year | duration | description                                      | genre          |
-|---|---------|-------|-------|--------------------|--------------------------------------------|--------------|-------------------|--------------|----------|--------------------------------------------------|---------------|
+|:--|:--------|:------|:------|:-------------------|:-------------------------------------------|:-------------|:------------------|:-------------|:---------|:-------------------------------------------------|:--------------|
 | 0 | s2      | Movie | 7:19  | Jorge Michel Grau  | Demián Bichir, Héctor Bonilla, Oscar Serrano, ... | Mexico       | December 23, 2016 | 2016         | 93       | After a devastating earthquake hits Mexico City... | Dramas        |
 | 1 | s3      | Movie | 23:59 | Gilbert Chan      | Tedd Chan, Stella Chung, Henley Hii, Lawrence ... | Singapore    | December 20, 2018 | 2011         | 78       | When an army recruit is found dead, his fellow...  | Horror Movies |
 | 2 | s4      | Movie | 9     | Shane Acker       | Elijah Wood, John C. Reilly, Jennifer Connelly... | United States | November 16, 2017 | 2009         | 80       | In a postapocalyptic world, rag-doll robots hi... | Action        |
@@ -81,7 +81,7 @@ schools = pd.read_csv("schools.csv")
 schools.head()
 ```
 |   | school_name                                          | borough   | building_code | average_math | average_reading | average_writing | percent_tested |
-|---|------------------------------------------------------|-----------|--------------|--------------|----------------|----------------|----------------|
+|:--|:-----------------------------------------------------|:----------|:-------------|:-------------|:---------------|:---------------|:---------------|
 | 0 | New Explorations into Science, Technology and ...   | Manhattan | M022         | 657          | 601            | 601            | NaN            |
 | 1 | Essex Street Academy                                | Manhattan | M445         | 395          | 411            | 387            | 78.9           |
 | 2 | Lower Manhattan Arts Academy                        | Manhattan | M445         | 418          | 428            | 415            | 65.1           |
@@ -98,7 +98,7 @@ best_math_schools.reset_index()
 ```
 
 |   | index | school_name                                                 | average_math |
-|---|-------|-------------------------------------------------------------|--------------|
+|:--|:------|:------------------------------------------------------------|:-------------|
 | 0 | 88    | Stuyvesant High School                                      | 754          |
 | 1 | 170   | Bronx High School of Science                                | 714          |
 | 2 | 93    | Staten Island Technical High School                         | 711          |
@@ -122,7 +122,7 @@ top_10_schools
 ```
 
 |       | school_name                                                    | total_SAT |
-|-------|----------------------------------------------------------------|-----------|
+|:------|:---------------------------------------------------------------|:----------|
 | 0     | Stuyvesant High School                                        | 2144      |
 | 1     | Bronx High School of Science                                  | 2041      |
 | 2     | Staten Island Technical High School                           | 2041      |
@@ -151,7 +151,7 @@ largest_std_dev = pd.DataFrame({"borough":[largest_std_dev["borough"]],
 largest_std_dev
 ```
 |   | borough   | num_schools | average_SAT | total_SAT | std_SAT |
-|---|-----------|------------|-------------|-----------|---------|
+|:--|:----------|:-----------|:------------|:----------|:--------|
 | 0 | Manhattan | 89         | 1340.13     | 1859      | 230.29  |
 
 
