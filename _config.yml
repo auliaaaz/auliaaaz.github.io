@@ -8,6 +8,8 @@ url: https://auliaaaz.github.io
 search:
   placeholder: Search auliaaaz
 
+heading_anchors: true
+
 aux_links: false
 
 # Enable navigation
