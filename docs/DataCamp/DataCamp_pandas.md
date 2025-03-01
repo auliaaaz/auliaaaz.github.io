@@ -5,8 +5,21 @@ parent: DataCamp Works
 nav_order: 1
 ---
 
-### Table of Contents
+# Data Manipulation with Pandas 
+{: .no_toc }
+<br/>
+
+<details open markdown="block">
+  <summary>
+    Table of contents
+  </summary>
+  {: .text-delta }
+
+
+1. TOC
 {:toc}
+</details>
+---
 
 ## Investigating Netflix Movies
 **Netflix**! What started in 1997 as a DVD rental service has since exploded into one of the largest entertainment and media companies.
