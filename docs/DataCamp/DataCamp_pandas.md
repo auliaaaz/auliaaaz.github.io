@@ -10,19 +10,20 @@ nav_order: 1
 Perform exploratory data analysis on the netflix_data.csv data to understand more about movies from the 1990s decade.
 
 ### **netflix_data.csv**
-| Column | Description |
-|:-------|:------------|
-| `show_id` | The ID of the show |
-| `type` | Type of show |
-| `title` | Title of the show |
-| `director` | Director of the show |
-| `cast` | Cast of the show |
-| `country` | Country of origin |
-| `date_added` | Date added to Netflix |
-| `release_year` | Year of Netflix release |
-| `duration` | Duration of the show in minutes |
-| `description` | Description of the show |
-| `genre` | Show genre |
+|   | Column        | Description                     |
+|---|:-------------|:--------------------------------|
+| 0 | `show_id`    | The ID of the show             |
+| 1 | `type`       | Type of show                   |
+| 2 | `title`      | Title of the show              |
+| 3 | `director`   | Director of the show           |
+| 4 | `cast`       | Cast of the show               |
+| 5 | `country`    | Country of origin              |
+| 6 | `date_added` | Date added to Netflix          |
+| 7 | `release_year` | Year of Netflix release       |
+| 8 | `duration`   | Duration of the show in minutes |
+| 9 | `description` | Description of the show       |
+| 10 | `genre`     | Show genre                     |
+
 
 
 ```python
@@ -39,23 +40,26 @@ netflix_df = pd.read_csv("netflix_data.csv")
 # Start coding here! Use as many cells as you like
 netflix_df.head(4)
 ```
-|   | show_id | type  | title | director           | cast                                      | country       | date_added        | release_year | duration | description                                      | genre          |
-|:--|:--------|:------|:------|:-------------------|:-------------------------------------------|:-------------|:------------------|:-------------|:---------|:-------------------------------------------------|:--------------|
-| 0 | s2      | Movie | 7:19  | Jorge Michel Grau  | Demián Bichir, Héctor Bonilla, Oscar Serrano, ... | Mexico       | December 23, 2016 | 2016         | 93       | After a devastating earthquake hits Mexico City... | Dramas        |
-| 1 | s3      | Movie | 23:59 | Gilbert Chan      | Tedd Chan, Stella Chung, Henley Hii, Lawrence ... | Singapore    | December 20, 2018 | 2011         | 78       | When an army recruit is found dead, his fellow...  | Horror Movies |
-| 2 | s4      | Movie | 9     | Shane Acker       | Elijah Wood, John C. Reilly, Jennifer Connelly... | United States | November 16, 2017 | 2009         | 80       | In a postapocalyptic world, rag-doll robots hi... | Action        |
-| 3 | s5      | Movie | 21    | Robert Luketic    | Jim Sturgess, Kevin Spacey, Kate Bosworth, Aar... | United States | January 1, 2020   | 2008         | 123      | A brilliant group of students become card-coun... | Dramas        |
 
-What was the most frequent movie duration in the 1990s? Save an approximate answer as an integer called duration (use 1990 as the decade's start year).
+|   | show_id | type  | title | director           | cast                                      | country       | date_added        | release_year | duration | description                                      | genre          |
+|---|:--------|:------|:------|:-------------------|:-------------------------------------------|:-------------|:------------------|:-------------|:---------|:------------------------------------------------|:--------------|
+| 0 | s2      | Movie | 7:19  | Jorge Michel Grau  | Demián Bichir, Héctor Bonilla, Oscar Serrano, ... | Mexico       | December 23, 2016 |         2016 |       93 | After a devastating earthquake hits Mexico City... | Dramas        |
+| 1 | s3      | Movie | 23:59 | Gilbert Chan      | Tedd Chan, Stella Chung, Henley Hii, Lawrence ... | Singapore    | December 20, 2018 |         2011 |       78 | When an army recruit is found dead, his fellow...  | Horror Movies |
+| 2 | s4      | Movie | 9     | Shane Acker       | Elijah Wood, John C. Reilly, Jennifer Connelly... | United States | November 16, 2017 |         2009 |       80 | In a postapocalyptic world, rag-doll robots hi... | Action        |
+| 3 | s5      | Movie | 21    | Robert Luketic    | Jim Sturgess, Kevin Spacey, Kate Bosworth, Aar... | United States | January 1, 2020   |         2008 |      123 | A brilliant group of students become card-coun... | Dramas        |
+
+
+**What was the most frequent movie duration in the 1990s?** 
 ```python
 duration = netflix_df[(netflix_df["release_year"] >= 1990) & (netflix_df["release_year"] <= 1999)]["duration"].value_counts(ascending=False)
 duration = duration.index[0]
 duration
 ```
     94
-  -> The most frequent movie duration in the 1990s is 1 hour 34 minutes
 
-A movie is considered short if it is less than 90 minutes. Count the number of short action movies released in the 1990s and save this integer as short_movie_count.
+The most frequent movie duration in the 1990s is 1 hour 34 minutes
+
+A movie is considered short if it is less than 90 minutes. **Count the number of short action movies released in the 1990s and save this integer as short_movie_count.**
 ```python
 short_movie_count = netflix_df[
     (netflix_df["release_year"] >= 1990) & (netflix_df["release_year"] <= 1999)]
@@ -64,7 +68,8 @@ short_movie_count = len(short_movie_count)
 short_movie_count
 ```
     7
-  -> The number of short action movies released in the 1990s is 7
+    
+The number of short action movies released in the 1990s is 7
 
 ## Exploring NYC Public School Test Result Scores
 Every year, American high school students take SATs, which are standardized tests intended to measure literacy, numeracy, and writing skills. There are three sections - reading, math, and writing, each with a **maximum score of 800 points**. 
@@ -88,7 +93,7 @@ schools.head()
 | 3 | High School for Dual Language and Asian Studies    | Manhattan | M445         | 613          | 453            | 463            | 95.9           |
 | 4 | Henry Street School for International Studies      | Manhattan | M056         | 410          | 406            | 381            | 59.7           |
 
-1. Which NYC schools have the best math results? The best math results are at least 80% of the *maximum possible score of 800* for math.
+**Which NYC schools have the best math results?** The best math results are at least 80% of the *maximum possible score of 800* for math.
 
 ```python
 best_math_schools = schools[["school_name", "average_math"]]
@@ -111,7 +116,7 @@ best_math_schools.reset_index()
 | 9 | 45    | Eleanor Roosevelt High School                               | 641          |
 
 
-2. What are the top 10 performing schools based on the combined SAT scores? top_10_schools containing the "school_name" and a new column named "total_SAT", with results ordered by "total_SAT" in descending order ("total_SAT" being the sum of math, reading, and writing scores).
+**What are the top 10 performing schools based on the combined SAT scores?** top_10_schools containing the "school_name" and a new column named "total_SAT", with results ordered by "total_SAT" in descending order ("total_SAT" being the sum of math, reading, and writing scores).
 
 ```python
 schools["total_SAT"] = schools["average_math"] + schools["average_reading"] + schools["average_writing"]
@@ -135,7 +140,7 @@ top_10_schools
 | 9     | High School for Mathematics, Science, and Engineering        | 1889      |
 
 
-3. Which single borough has the largest standard deviation in the combined SAT score?
+**Which single borough has the largest standard deviation in the combined SAT score**
 
 ```python
 schools["num_schools"] = schools.groupby("borough")["school_name"].transform('count')
@@ -151,8 +156,9 @@ largest_std_dev = pd.DataFrame({"borough":[largest_std_dev["borough"]],
 largest_std_dev
 ```
 |   | borough   | num_schools | average_SAT | total_SAT | std_SAT |
-|:--|:----------|:-----------|:------------|:----------|:--------|
+|---|:---------|------------:|------------:|----------:|--------:|
 | 0 | Manhattan | 89         | 1340.13     | 1859      | 230.29  |
+
 
 
 Manhattan is a borough in NYC that have the largest standard deviation of total SAT score.
