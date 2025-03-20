@@ -6,6 +6,25 @@ has_children: false
 ---
 
 # Projects on GitHub
+{: .no_toc }
+<br/>
+
+<details open markdown="block">
+  <summary>
+    Table of contents
+  </summary>
+  {: .text-delta }
+
+
+1. TOC
+{:toc}
+</details>
+---
+
+## Group Project
+- Pahamify Customer Review Analysis (2024)
+- End to End Data Pipeline: Fraud and Customer Analysis (2024)
+- Fish Disease Classification (2021)
 
 ## Data Analysis  
 - [Bike Sharing Analysis](https://github.com/auliaaaz/Bike-Sharing-Analysis/blob/main/Data%20Analytics.ipynb){: .fs-5 .fw-300 .text-grey-dk-800}  
