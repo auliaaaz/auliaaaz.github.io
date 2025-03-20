@@ -21,7 +21,7 @@ They plan to use our insights to allocate resources effectively to tackle variou
 They have provided us with a single dataset to use. A summary and preview are provided below.
 It is a modified version of the original data, which is publicly available from Los Angeles Open Data.
 
-# crimes.csv
+crimes.csv
 
 | Column     | Description              |
 |------------|--------------------------|
@@ -94,14 +94,6 @@ peak_night_crime_location
 
 
 Identify the number of crimes committed against victims of different age groups. 
-
-```python
-crimes['Vict Age'].min()
-```
-
-    2
-
-
 
 ```python
 bins = [0, 17, 25, 34, 44, 54, 64, float('inf')]
