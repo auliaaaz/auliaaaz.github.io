@@ -21,22 +21,41 @@ They plan to use our insights to allocate resources effectively to tackle variou
 They have provided us with a single dataset to use. A summary and preview are provided below.
 It is a modified version of the original data, which is publicly available from Los Angeles Open Data.
 
-crimes.csv
+| **Column**           | **Description**                                                                                                                                                                                                                                               |
+|----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `'DR_NO'`            | Division of Records Number: Official file number consisting of a 2-digit year, area ID, and 5 digits.                                                                                                                 |
+| `'Date Rptd'`        | Date reported in MM/DD/YYYY format.                                                                                                                                                                                      |
+| `'DATE OCC'`         | Date of occurrence in MM/DD/YYYY format.                                                                                                                                                                                  |
+| `'TIME OCC'`         | Time of occurrence in 24-hour military time.                                                                                                                                                                              |
+| `'AREA NAME'`        | The 21 Geographic Areas or Patrol Divisions, named based on landmarks or surrounding communities. For example, the 77th Street Division is responsible for neighborhoods in South Los Angeles.                           |
+| `'Crm Cd Desc'`      | Description of the crime committed.                                                                                                                                                                                       |
+| `'Vict Age'`         | Victim's age in years.                                                                                                                                                                                                    |
+| `'Vict Sex'`         | Victim's sex (`F`: Female, `M`: Male, `X`: Unknown).                                                                                                                                                                      |
+| `'Vict Descent'`     | Victim's descent:                                                                                                                                                                                                         |
+|                      | - `A` - Other Asian                                                                                                                                                                                                       |
+|                      | - `B` - Black                                                                                                                                                                                                             |
+|                      | - `C` - Chinese                                                                                                                                                                                                           |
+|                      | - `D` - Cambodian                                                                                                                                                                                                         |
+|                      | - `F` - Filipino                                                                                                                                                                                                          |
+|                      | - `G` - Guamanian                                                                                                                                                                                                         |
+|                      | - `H` - Hispanic/Latin/Mexican                                                                                                                                                                                            |
+|                      | - `I` - American Indian/Alaskan Native                                                                                                                                                                                    |
+|                      | - `J` - Japanese                                                                                                                                                                                                          |
+|                      | - `K` - Korean                                                                                                                                                                                                            |
+|                      | - `L` - Laotian                                                                                                                                                                                                           |
+|                      | - `O` - Other                                                                                                                                                                                                             |
+|                      | - `P` - Pacific Islander                                                                                                                                                                                                  |
+|                      | - `S` - Samoan                                                                                                                                                                                                            |
+|                      | - `U` - Hawaiian                                                                                                                                                                                                          |
+|                      | - `V` - Vietnamese                                                                                                                                                                                                        |
+|                      | - `W` - White                                                                                                                                                                                                             |
+|                      | - `X` - Unknown                                                                                                                                                                                                           |
+|                      | - `Z` - Asian Indian                                                                                                                                                                                                      |
+| `'Weapon Desc'`      | Description of the weapon used, if applicable.                                                                                                                                                                           |
+| `'Status Desc'`      | Status of the crime investigation.                                                                                                                                                                                       |
+| `'LOCATION'`         | Street address where the crime occurred.                                                                                                                                                                                 |
 
-| Column     | Description              |
-|------------|--------------------------|
-| `'DR_NO'` | Division of Records Number: Official file number made up of a 2-digit year, area ID, and 5 digits. |
-| `'Date Rptd'` | Date reported - MM/DD/YYYY. |
-| `'DATE OCC'` | Date of occurrence - MM/DD/YYYY. |
-| `'TIME OCC'` | In 24-hour military time. |
-| `'AREA NAME'` | The 21 Geographic Areas or Patrol Divisions are also given a name designation that references a landmark or the surrounding community that it is responsible for. For example, the 77th Street Division is located at the intersection of South Broadway and 77th Street, serving neighborhoods in South Los Angeles. |
-| `'Crm Cd Desc'` | Indicates the crime committed. |
-| `'Vict Age'` | Victim's age in years. |
-| `'Vict Sex'` | Victim's sex: `F`: Female, `M`: Male, `X`: Unknown. |
-| `'Vict Descent'` | Victim's descent:<ul><li>`A` - Other Asian</li><li>`B` - Black</li><li>`C` - Chinese</li><li>`D` - Cambodian</li><li>`F` - Filipino</li><li>`G` - Guamanian</li><li>`H` - Hispanic/Latin/Mexican</li><li>`I` - American Indian/Alaskan Native</li><li>`J` - Japanese</li><li>`K` - Korean</li><li>`L` - Laotian</li><li>`O` - Other</li><li>`P` - Pacific Islander</li><li>`S` - Samoan</li><li>`U` - Hawaiian</li><li>`V` - Vietnamese</li><li>`W` - White</li><li>`X` - Unknown</li><li>`Z` - Asian Indian</li> |
-| `'Weapon Desc'` | Description of the weapon used (if applicable). |
-| `'Status Desc'` | Crime status. |
-| `'LOCATION'` | Street address of the crime. |
+
 
 ```python
 # Re-run this cell
