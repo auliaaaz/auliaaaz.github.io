@@ -30,9 +30,7 @@ However, as with any highly populated city, it isn't always glamorous and there 
 
 The Los Angeles Police Department (LAPD) has requested support in analyzing crime data to identify patterns in criminal behavior. The insights gained will assist in effectively allocating resources to address various crimes across different areas.
 
-### The Data
-
-They have provided us with a single dataset to use. A summary and preview are provided below.
+They have provided a single dataset to use. A summary and preview are provided below.
 It is a modified version of the original data, which is publicly available from Los Angeles Open Data.
 
 | **Column**           | **Description**                                                                                                                                                                                                                                               |
@@ -406,9 +404,9 @@ ds_jobs_transformed = ds_jobs_transformed[(ds_jobs_transformed['experience'].isi
 ```
 
 ```python
-
-```
 ds_jobs_transformed.info()
+```
+
 ```
 <class 'pandas.core.frame.DataFrame'>
 Int64Index: 2201 entries, 9 to 19143
